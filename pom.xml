@@ -148,9 +148,16 @@
 				<configuration>
 					<show>public</show>
 					<quiet>true</quiet>
-					<links>
+					<!--links>
 						<link>http://download.oracle.com/javase/6/docs/api/</link>
-					</links>
+					</links-->
+                    <!-- workaround for https://bugs.openjdk.java.net/browse/JDK-8212233 -->
+                    <javaApiLinks>
+                        <property>
+                            <name>foo</name>
+                            <value>bar</value>
+                        </property>
+                    </javaApiLinks>
 				</configuration>
 				<executions>
 					<execution>
@@ -252,7 +259,7 @@
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
 				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.8.3</version>
+				<version>0.14.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -280,6 +287,11 @@
 						<groupId>org.jvnet.jaxb2_commons</groupId>
 						<artifactId>jaxb2-default-value</artifactId>
 						<version>1.1</version>
+					</dependency>
+					<dependency>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+						<version>1.1.1</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -396,46 +408,6 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>jdk18</id>
-			<activation>
-				<jdk>1.8</jdk>
-			</activation>
-			<properties>
-				<!-- Quickfix for javadoc generation with jdk8. Please remove this after fixing html 
-				validation errors in javadoc commentary. -->
-				<javadoc.opts>-Xdoclint:none</javadoc.opts>
-				<bc-jdk-version>jdk16</bc-jdk-version>
-			</properties>
-		</profile>
-		<profile>
-			<id>jdk17</id>
-			<activation>
-				<jdk>1.7</jdk>
-			</activation>
-			<properties>
-				<bc-jdk-version>jdk16</bc-jdk-version>
-			</properties>
-		</profile>
-		<profile>
-			<id>jdk16</id>
-			<activation>
-				<jdk>1.6</jdk>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<bc-jdk-version>jdk16</bc-jdk-version>
-			</properties>
-		</profile>
-		<profile>
-			<id>jdk15</id>
-			<activation>
-				<jdk>1.5</jdk>
-			</activation>
-			<properties>
-				<bc-jdk-version>jdk15</bc-jdk-version>
-			</properties>
-		</profile>
 		<profile>
 			<id>opendj</id>
 			<activation>
@@ -686,7 +658,7 @@
 		</dependency>
 		<dependency>
 			<groupId>bouncycastle</groupId>
-			<artifactId>bcprov-${bc-jdk-version}</artifactId>
+			<artifactId>bcprov-jdk16</artifactId>
 			<version>140</version>
 			<type>jar</type>
 			<optional>false</optional>
@@ -755,6 +727,26 @@
 			<version>1.1</version>
 		</dependency>
 		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+<dependency>
+  <groupId>javax.xml.bind</groupId>
+  <artifactId>jaxb-api</artifactId>
+  <version>2.3.0</version>
+</dependency>
+<dependency>
+  <groupId>com.sun.xml.bind</groupId>
+  <artifactId>jaxb-core</artifactId>
+  <version>2.3.0</version>
+</dependency>
+<dependency>
+  <groupId>com.sun.xml.bind</groupId>
+  <artifactId>jaxb-impl</artifactId>
+  <version>2.3.0</version>
+</dependency>
+		<dependency>
 			<groupId>net.java.xadisk</groupId>
 			<artifactId>xadisk</artifactId>
 			<version>1.1</version>
@@ -764,11 +756,11 @@
 			<artifactId>connector-api</artifactId>
 			<version>1.5</version>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>javaee</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>5</version>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>org.codehaus.btm</groupId>
 			<artifactId>btm</artifactId>
